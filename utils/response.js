@@ -8,7 +8,7 @@ function responseServer(response, statusCode, message, data) {
     responseData.data = data;
   }
 
-  response.status(statusCode).json(responseData);
+  return response.status(statusCode).json(responseData);
 }
 
 function raiseException(response, statusCode, message, error) {

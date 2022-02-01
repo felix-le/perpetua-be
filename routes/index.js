@@ -4,6 +4,11 @@ const { statusConstants } = require('../constants/status.constants');
 const postsRouter = require('./posts');
 const testServerRouter = require('./testServer');
 router.get('/', function (req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header(
+    'Access-Control-Allow-Headers',
+    'Origin, X-Requested-With, Content-Type, Accept'
+  );
   res
     .status(statusConstants.SUCCESS_CODE)
     .json('Welcome to the Perpetua - API');
