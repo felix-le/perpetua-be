@@ -11,14 +11,8 @@ async function getAllPostsFromServerLink(
     return mess;
   }
 
-  if (tags.includes(',')) {
-    return await axiosInstance.get(
-      `?tags=${tags}&sortBy=${sortBy}&direction=${direction}`
-    );
-  } else {
-    return await axiosInstance.get(
-      `?tag=${tags}&sortBy=${sortBy}&direction=${direction}`
-    );
-  }
+  return await axiosInstance.get(
+    `?tag=${tags}&sortBy=${sortBy}&direction=${direction}`
+  );
 }
 module.exports = { getAllPostsFromServerLink };
