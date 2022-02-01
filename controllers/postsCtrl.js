@@ -10,6 +10,7 @@ const postsCtrl = {
       const { tag, sortBy = 'id', direction = 'asc' } = req.query;
 
       if (tag) {
+        console.log('🚀  ~ tag', tag);
         const sourceData = await getAllPostsFromServerLink(tag);
 
         const posts = sourceData.posts;
