@@ -7,7 +7,7 @@ const _ = require('lodash');
 const postsCtrl = {
   getAllPosts: async (req, res) => {
     try {
-      const { tag } = req.query;
+      const { tag, sortBy = 'id', direction = 'asc' } = req.query;
 
       if (tag) {
         const sourceData = await getAllPostsFromServerLink(tag);
@@ -37,12 +37,24 @@ const postsCtrl = {
           };
         });
 
-        return responseServer(
-          res,
-          statusConstants.SUCCESS_CODE,
-          'Get all Posts successfully',
-          mergedData
-        );
+        const sortByKeys = Object.keys(mergedData[0]);
+
+        if (sortByKeys.includes(sortBy)) {
+          // sort by sortBy and direction
+          const sortedData = _.orderBy(mergedData, sortBy, direction);
+          return responseServer(
+            res,
+            statusConstants.SUCCESS_CODE,
+            'Get all Posts successfully',
+            sortedData
+          );
+        } else {
+          return raiseException(
+            res,
+            statusConstants.BAD_REQUEST_CODE,
+            `sortBy parameter is invalid`
+          );
+        }
       } else {
         return raiseException(
           res,
