@@ -5,6 +5,7 @@ function responseServer(response, statusCode, message, data) {
   };
 
   if (data) {
+    responseData.count = data.length;
     responseData.data = data;
   }
 
