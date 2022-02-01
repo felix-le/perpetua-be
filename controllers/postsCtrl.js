@@ -7,15 +7,15 @@ const postsCtrl = {
   getAllPosts: async (req, res) => {
     try {
       const { tag } = req.query;
-      const data = await getAllPostsFromServerLink(tag);
+      const sourceData = await getAllPostsFromServerLink(tag);
 
-      logger.info(data);
+      logger.info(sourceData);
 
       return responseServer(
         res,
         statusConstants.SUCCESS_CODE,
         'Get all Posts successfully',
-        data
+        sourceData
       );
     } catch (error) {
       logger.error(error);
