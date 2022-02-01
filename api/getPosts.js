@@ -1,17 +1,24 @@
 const { axiosInstance } = require('./baseApi');
 async function getAllPostsFromServerLink(
-  tag,
+  tags,
   sortBy = 'id',
   direction = 'asc'
 ) {
-  if (!tag) {
+  if (!tags) {
     const mess = {
       error: 'The tag parameter is required',
     };
     return mess;
   }
-  return await axiosInstance.get(
-    `?tag=${tag}&sortBy=${sortBy}&direction=${direction}`
-  );
+
+  if (tags.includes(',')) {
+    return await axiosInstance.get(
+      `?tags=${tags}&sortBy=${sortBy}&direction=${direction}`
+    );
+  } else {
+    return await axiosInstance.get(
+      `?tag=${tags}&sortBy=${sortBy}&direction=${direction}`
+    );
+  }
 }
 module.exports = { getAllPostsFromServerLink };

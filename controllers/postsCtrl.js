@@ -7,11 +7,10 @@ const _ = require('lodash');
 const postsCtrl = {
   getAllPosts: async (req, res) => {
     try {
-      const { tag, sortBy = 'id', direction = 'asc' } = req.query;
+      const { tags, sortBy = 'id', direction = 'asc' } = req.query;
 
-      if (tag) {
-        console.log('🚀  ~ tag', tag);
-        const sourceData = await getAllPostsFromServerLink(tag);
+      if (tags.replace(/\s/g, '')) {
+        const sourceData = await getAllPostsFromServerLink(tags);
 
         const posts = sourceData.posts;
 
@@ -43,6 +42,7 @@ const postsCtrl = {
         if (sortByKeys.includes(sortBy)) {
           // sort by sortBy and direction
           const sortedData = _.orderBy(mergedData, sortBy, direction);
+
           return responseServer(
             res,
             statusConstants.SUCCESS_CODE,
