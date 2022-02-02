@@ -1,3 +1,4 @@
+Draft README
 step 1: setup structure of the project
 
 - create folders and files
