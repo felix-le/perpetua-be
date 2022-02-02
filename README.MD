@@ -24,3 +24,5 @@ Step 4: reduce the numbe of API calls
 - You can cache the results of an API call on your server
 
 Step 5: create docs
+
+Step 6: go live

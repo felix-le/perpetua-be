@@ -81,7 +81,7 @@ const postsCtrl = {
               res,
               statusConstants.SUCCESS_CODE,
               'Get all Posts successfully',
-              sortedData
+              { posts: sortedData }
             );
           }
         } else {
@@ -117,7 +117,7 @@ const postsCtrl = {
               res,
               statusConstants.SUCCESS_CODE,
               'Get all Posts successfully',
-              result
+              { posts: result }
             );
           });
         }
@@ -125,14 +125,14 @@ const postsCtrl = {
         return raiseException(
           res,
           statusConstants.BAD_REQUEST_CODE,
-          'The tag parameter is required'
+          'The tags parameter is required'
         );
       }
     } catch (error) {
       logger.error(error);
       return raiseException(
         res,
-        statusConstants.SERVER_ERROR_CODE,
+        statusConstants.NOT_FOUND_CODE,
         'Internal server error'
       );
     }
