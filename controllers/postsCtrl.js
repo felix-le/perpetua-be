@@ -90,14 +90,23 @@ const postsCtrl = {
               const sourceData = await getAllPostsFromServerLink(tag);
               const posts = sourceData.posts;
               const mergedData = getUniqPosts(posts);
-              return mergedData;
+              const result = await sortArrFnAsync(
+                mergedData,
+                sortBy,
+                direction
+              );
+              return result;
             });
             const result = await Promise.all(promises);
             return result;
           };
-          mapTagLoop().then(async (value) => {
-            const data = value;
-            // Do not know how to pust data to response with sortBy and direction
+          mapTagLoop().then((value) => {
+            return responseServer(
+              res,
+              statusConstants.SUCCESS_CODE,
+              'Get all Posts successfully',
+              value
+            );
           });
         }
       } else {
