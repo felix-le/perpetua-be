@@ -4,9 +4,9 @@ const logger = require('../utils/logger');
 const { getAllPostsFromServerLink } = require('../api/getPosts');
 const _ = require('lodash');
 
-const getUniqPosts = async (posts) => {
+const getUniqPosts = (posts) => {
   // group all posts by authorId
-  const groupedData = await _.groupBy(posts, 'authorId');
+  const groupedData = _.groupBy(posts, 'authorId');
   // merge properties likes, popularity, reads, tags array in the same authorId
   const mergedData = _.map(groupedData, (value, key) => {
     const authorId = key;
@@ -18,9 +18,9 @@ const getUniqPosts = async (posts) => {
     const reads = _.sumBy(value, 'reads');
     const tags = _.uniq(_.flatten(_.map(value, 'tags')));
     return {
-      id,
+      id: parseInt(id),
       author,
-      authorId,
+      authorId: parseInt(authorId),
       likes,
       popularity,
       reads,
@@ -44,17 +44,7 @@ const sortArrFn = (arr, sortBy, direction) => {
     return [];
   }
 };
-const sortArrFnAsync = async (arr, sortBy, direction) => {
-  const sortByKeys = Object.keys(arr[0]);
 
-  if (sortByKeys.includes(sortBy)) {
-    // sort by sortBy and direction
-    const sortedData = _.orderBy(arr, sortBy, direction);
-    return sortedData;
-  } else {
-    return [];
-  }
-};
 const postsCtrl = {
   getAllPosts: async (req, res) => {
     try {
@@ -66,7 +56,7 @@ const postsCtrl = {
           const sourceData = await getAllPostsFromServerLink(tags);
 
           const posts = sourceData.posts;
-          const mergedData = await getUniqPosts(posts);
+          const mergedData = getUniqPosts(posts);
 
           const sortedData = sortArrFn(mergedData, sortBy, direction);
 
@@ -90,13 +80,11 @@ const postsCtrl = {
             const promises = tagArr.map(async (tag) => {
               const sourceData = await getAllPostsFromServerLink(tag);
               const posts = sourceData.posts;
-              const mergedData = await getUniqPosts(posts);
 
-              const sortDataTags = await sortArrFnAsync(
-                mergedData,
-                sortBy,
-                direction
-              );
+              const mergedData = getUniqPosts(posts);
+
+              const sortDataTags = sortArrFn(mergedData, sortBy, direction);
+
               return sortDataTags;
             });
             const sortDataTags = await Promise.all(promises);
