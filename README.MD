@@ -2,7 +2,11 @@
 
 ## Working application
 
-# [Live Post link](https://perpetua.herokuapp.com/api/posts?tags=tech)
+# [Live Post without tag link](https://perpetua.herokuapp.com/api/posts)
+
+# [Live post link with tags](https://perpetua.herokuapp.com/api/posts?tags=tech)
+
+# [Live post link with tags = tech,history & sortBy=popularity & direction = desc ](https://perpetua.herokuapp.com/api/posts?tags=tech,history&sortBy=popularity&direction=desc)
 
 ### Rout 1
 
