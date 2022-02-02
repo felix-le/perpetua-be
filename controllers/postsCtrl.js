@@ -101,11 +101,13 @@ const postsCtrl = {
             return result;
           };
           mapTagLoop().then((value) => {
+            const result = _.flatten(value);
+
             return responseServer(
               res,
               statusConstants.SUCCESS_CODE,
               'Get all Posts successfully',
-              value
+              result
             );
           });
         }
