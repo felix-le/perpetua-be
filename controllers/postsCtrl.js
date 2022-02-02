@@ -4,9 +4,9 @@ const logger = require('../utils/logger');
 const { getAllPostsFromServerLink } = require('../api/getPosts');
 const _ = require('lodash');
 
-const getUniqPosts = (posts) => {
+const getUniqPosts = async (posts) => {
   // group all posts by authorId
-  const groupedData = _.groupBy(posts, 'authorId');
+  const groupedData = await _.groupBy(posts, 'authorId');
   // merge properties likes, popularity, reads, tags array in the same authorId
   const mergedData = _.map(groupedData, (value, key) => {
     const authorId = key;
@@ -66,21 +66,22 @@ const postsCtrl = {
           const sourceData = await getAllPostsFromServerLink(tags);
 
           const posts = sourceData.posts;
-          const mergedData = getUniqPosts(posts);
+          const mergedData = await getUniqPosts(posts);
 
           const sortedData = sortArrFn(mergedData, sortBy, direction);
-          if (sortedData) {
+
+          if (!sortedData || sortedData.length === 0) {
+            return raiseException(
+              res,
+              statusConstants.BAD_REQUEST_CODE,
+              `sortBy parameter is invalid`
+            );
+          } else {
             return responseServer(
               res,
               statusConstants.SUCCESS_CODE,
               'Get all Posts successfully',
               sortedData
-            );
-          } else {
-            return raiseException(
-              res,
-              statusConstants.BAD_REQUEST_CODE,
-              `sortBy parameter is invalid`
             );
           }
         } else {
@@ -89,19 +90,28 @@ const postsCtrl = {
             const promises = tagArr.map(async (tag) => {
               const sourceData = await getAllPostsFromServerLink(tag);
               const posts = sourceData.posts;
-              const mergedData = getUniqPosts(posts);
-              const result = await sortArrFnAsync(
+              const mergedData = await getUniqPosts(posts);
+
+              const sortDataTags = await sortArrFnAsync(
                 mergedData,
                 sortBy,
                 direction
               );
-              return result;
+              return sortDataTags;
             });
-            const result = await Promise.all(promises);
-            return result;
+            const sortDataTags = await Promise.all(promises);
+            return sortDataTags;
           };
           mapTagLoop().then((value) => {
             const result = _.flatten(value);
+
+            if (!result || result.length === 0) {
+              return raiseException(
+                res,
+                statusConstants.BAD_REQUEST_CODE,
+                `sortBy parameter is invalid`
+              );
+            }
 
             return responseServer(
               res,

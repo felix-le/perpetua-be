@@ -10,3 +10,14 @@ Step 2: connect with the Perpetua link from BE
 - sortBy, direction
 
 <!-- test case  -->
+
+Step 3: Write test cases
+
+- test case 1: show up data from default values
+- test case 2: sortBy, direction
+- test case 3: tag / tags / no tag
+- test case 4: sortBy
+
+Step 4: reduce the numbe of API calls
+
+- You can cache the results of an API call on your server
