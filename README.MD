@@ -12,7 +12,7 @@ Step 2: connect with the Perpetua link from BE
 
 <!-- test case  -->
 
-Step 3: Write test cases
+Step 3: Write test cases - use jest and supertest
 
 - test case 1: show up data from default values
 - test case 2: sortBy, direction
